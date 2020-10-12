@@ -11,15 +11,22 @@ import {
 import { useState } from "react";
 import IProduct from '../models/product';
 import AlertComponent from '../components/alert_component';
+import useSWR, { mutate, trigger } from 'swr';
+import { API_TODOS, API_ELIMINAR } from "../routes/api";
 
-export default function TableProducts({products}:{products: IProduct[]}) {
+export default function TableProducts({products, isLoading}:
+    {products: IProduct[], isLoading: boolean}) {
+
+    const {data} = useSWR(API_TODOS);
     
     const [alert, setAlert] = useState(false);
     const [alertOption, setAlertOption] = useState('success');
     const [alertMessage, setAlertMessage] = useState('');
 
     const deleteProduct = async(id: string) => {
-        const res = await fetch(process.env.NEXT_PUBLIC_API_URL+'/eliminarUnProducto/'+id, {
+        const res = await fetch(
+            API_ELIMINAR+'/'+id, 
+        {
             method: 'delete',
             headers: {'Content-Type': 'application/json'}
         });
@@ -30,15 +37,14 @@ export default function TableProducts({products}:{products: IProduct[]}) {
             setAlertMessage('Ocurrió un problema en el servidor. No se pudo procesar su petición');
         }
         else  {
-            const index = await products.findIndex(a => a._id == product._id);
-            products.splice(index, 1);
-
+            mutate(API_TODOS, data.filter(c => c._id !== product._id), false)
             setAlertOption('success');
             setAlertMessage('El producto se eliminó correctamente');
         }
         setAlert(true);
     };
     
+    if (isLoading) return <p>Cargando...</p>
     return (
         <div>
             <AlertComponent alert={alert} alertOption={alertOption} alertMessage={alertMessage}></AlertComponent>

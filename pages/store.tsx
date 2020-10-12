@@ -2,43 +2,33 @@ import {
     Typography, Button
 } from '@material-ui/core'
 
-import { useState } from "react";
 import LayoutComponent from '../components/layout_component'
 import TableProducts from '../components/table_products';
 import DialogProduct from '../components/dialog_product'
 import IProduct from '../models/product'
-import path from 'path';
+import useSWR, { mutate, trigger } from 'swr';
+import { API_TODOS } from "../routes/api";
 
-//export default function Store({products}:{products:IProduct[]}) {
 export default function Store(props) {
 
-    const [products, setProducts] = useState(props.products);
-
-    const agua = {
-        ProductQuantity: 10,
-        NameProduct: 'Agua natural',
-        Category: 'Bebidas',
-        Description: 'Agua normal',
-    };
-
-    const actualizar = () => {
-        console.log('llego aquí');
-        setProducts(getStaticProps);
-    };
+    const { products, isLoading, isError }: 
+        {products:IProduct[], isLoading:boolean, isError:any} 
+        = useProducts();
 
     return (
         <LayoutComponent>
             <Typography variant="h5">Lista de productos</Typography>
-            <DialogProduct />
-            <TableProducts products={products} />
+            <DialogProduct products={products} />
+            <TableProducts products={products} isLoading={isLoading}/>
         </LayoutComponent>
     );
 }
 
-export async function getStaticProps(context) {
-    const res = await fetch(process.env.NEXT_PUBLIC_API_URL+'/listarTodosLosProductos');
-    const products = await res.json();
+function useProducts() {
+    const { data, error } = useSWR(API_TODOS);
     return {
-        props: {products}
+        products: data,
+        isLoading: !error && !data,
+        isError: error,
     }
 }

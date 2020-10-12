@@ -12,10 +12,14 @@ import {
 
 import { useState } from "react";
 import { useForm, Controller } from 'react-hook-form';
+import useSWR, { mutate, trigger } from 'swr';
 import AlertComponent from '../components/alert_component';
+import IProduct from '../models/product';
+import { API_CREAR, API_TODOS } from "../routes/api";
 
-export default function DialogProduct() {
+export default function DialogProduct({products}:{products:IProduct[]}) {
 
+    const {data} = useSWR(API_TODOS);
     const {register, handleSubmit, errors, control} = useForm();
 
     const [openDialog, setOpenDialog] = useState(false);
@@ -37,10 +41,14 @@ export default function DialogProduct() {
     const [alertOption, setAlertOption] = useState('success');
     const [alertMessage, setAlertMessage] = useState('');
 
-    const onSubmit = async (data) => {
-        const res = await fetch(process.env.NEXT_PUBLIC_API_URL+'/crearUnProducto', {
+    const onSubmit = async (form) => {
+        
+        const res = await fetch(
+            process.env.NEXT_PUBLIC_API_URL
+            +'/crearUnProducto', 
+        {
             method: 'post',
-            body: JSON.stringify(data),
+            body: JSON.stringify(form),
             headers: {'Content-Type': 'application/json'}
         });
         const product = await res.json();
@@ -50,6 +58,7 @@ export default function DialogProduct() {
             setAlertMessage('Ocurrió un problema en el servidor. No se pudo procesar su petición');
         }
         else  {
+            mutate(API_TODOS, [...data, product], false);
             setAlertOption('success');
             setAlertMessage('Producto agregado con éxito');
             setOpenDialog(false);
@@ -60,7 +69,7 @@ export default function DialogProduct() {
     return (
         <div>
             <AlertComponent alert={alert} alertOption={alertOption} alertMessage={alertMessage}></AlertComponent>
-            <Button onClick={handleOpenDialog} color="primary">Agregar un producto</Button>
+            <Button onClick={handleOpenDialog} color="primary" variant="outlined">Agregar un producto</Button>
             <Dialog open={openDialog} onClose={handleCloseDialog} aria-labelledby="form-dialog-title">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <DialogTitle id="form-dialog-title">Nuevo producto</DialogTitle>
