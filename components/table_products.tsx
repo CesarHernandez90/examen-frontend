@@ -19,7 +19,7 @@ export default function TableProducts({products}:{products: IProduct[]}) {
     const [alertMessage, setAlertMessage] = useState('');
 
     const deleteProduct = async(id: string) => {
-        const res = await fetch('http://localhost:5000/eliminarUnProducto/'+id, {
+        const res = await fetch(process.env.NEXT_PUBLIC_API_URL+'/eliminarUnProducto/'+id, {
             method: 'delete',
             headers: {'Content-Type': 'application/json'}
         });

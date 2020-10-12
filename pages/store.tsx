@@ -7,6 +7,7 @@ import LayoutComponent from '../components/layout_component'
 import TableProducts from '../components/table_products';
 import DialogProduct from '../components/dialog_product'
 import IProduct from '../models/product'
+import path from 'path';
 
 //export default function Store({products}:{products:IProduct[]}) {
 export default function Store(props) {
@@ -35,7 +36,7 @@ export default function Store(props) {
 }
 
 export async function getStaticProps(context) {
-    const res = await fetch('http://localhost:5000/listarTodosLosProductos');
+    const res = await fetch(process.env.NEXT_PUBLIC_API_URL+'/listarTodosLosProductos');
     const products = await res.json();
     return {
         props: {products}

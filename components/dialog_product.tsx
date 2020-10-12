@@ -38,7 +38,7 @@ export default function DialogProduct() {
     const [alertMessage, setAlertMessage] = useState('');
 
     const onSubmit = async (data) => {
-        const res = await fetch('http://localhost:5000/crearUnProducto', {
+        const res = await fetch(process.env.NEXT_PUBLIC_API_URL+'/crearUnProducto', {
             method: 'post',
             body: JSON.stringify(data),
             headers: {'Content-Type': 'application/json'}
