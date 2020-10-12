@@ -11,7 +11,7 @@ import {
 import { useState } from "react";
 import IProduct from '../models/product';
 import AlertComponent from '../components/alert_component';
-import useSWR, { mutate, trigger } from 'swr';
+import useSWR, { mutate } from 'swr';
 import { API_TODOS, API_ELIMINAR } from "../routes/api";
 
 export default function TableProducts({products, isLoading}:
@@ -72,7 +72,7 @@ export default function TableProducts({products, isLoading}:
                                     <TableCell>{product.Category}</TableCell>
                                     <TableCell>{product.Description}</TableCell>
                                     <TableCell align="right">
-                                        <Button variant="contained" color="primary">Editar</Button>{' '}
+                                        <Button variant="contained" color="primary" disabled>Editar</Button>{' '}
                                         <Button variant="contained" color="secondary" onClick={() => deleteProduct(product._id)}>Eliminar</Button>
                                     </TableCell>
                                 </TableRow>

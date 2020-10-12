@@ -1,5 +1,5 @@
 import { 
-    Typography
+    Typography, Box
 } from '@material-ui/core'
 
 import LayoutComponent from '../components/layout_component'
@@ -19,8 +19,12 @@ export default function Store(props) {
     return (
         <LayoutComponent>
             <Head><title>Productos</title></Head>
-            <Typography variant="h5">Lista de productos</Typography>
-            <DialogProduct products={products} />
+            <Box display="flex">
+                <Box flexGrow={1}>
+                    <Typography variant="h5">Lista de productos</Typography>
+                </Box>
+                <Box><DialogProduct /></Box>
+            </Box>
             <TableProducts products={products} isLoading={isLoading}/>
         </LayoutComponent>
     );

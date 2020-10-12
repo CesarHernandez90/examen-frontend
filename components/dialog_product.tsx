@@ -14,10 +14,9 @@ import { useState } from "react";
 import { useForm, Controller } from 'react-hook-form';
 import useSWR, { mutate, trigger } from 'swr';
 import AlertComponent from '../components/alert_component';
-import IProduct from '../models/product';
 import { API_CREAR, API_TODOS } from "../routes/api";
 
-export default function DialogProduct({products}:{products:IProduct[]}) {
+export default function DialogProduct() {
 
     const {data} = useSWR(API_TODOS);
     const {register, handleSubmit, errors, control} = useForm();
