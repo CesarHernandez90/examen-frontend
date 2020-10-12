@@ -8,12 +8,14 @@ import {
 	Button 
 } from '@material-ui/core'
 
+import Head from 'next/head';
 import Link from '../src/Link'
 import LayoutComponent from '../components/layout_component';
 
 export default function Index() {
 	return (
 		<LayoutComponent>
+            <Head><title>Candidato</title></Head>
 			<Card>
                 <CardContent>
                     <Typography variant="h4">Información del candidato</Typography>

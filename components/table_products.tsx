@@ -22,6 +22,9 @@ export default function TableProducts({products, isLoading}:
     const [alert, setAlert] = useState(false);
     const [alertOption, setAlertOption] = useState('success');
     const [alertMessage, setAlertMessage] = useState('');
+    const closeAlert = () => {
+        setAlert(false);
+    };
 
     const deleteProduct = async(id: string) => {
         const res = await fetch(
@@ -47,7 +50,8 @@ export default function TableProducts({products, isLoading}:
     if (isLoading) return <p>Cargando...</p>
     return (
         <div>
-            <AlertComponent alert={alert} alertOption={alertOption} alertMessage={alertMessage}></AlertComponent>
+            <AlertComponent alert={alert} alertOption={alertOption} 
+                alertMessage={alertMessage} closeAlert={closeAlert}></AlertComponent>
             <TableContainer>
                 <Table>
                     <TableHead>

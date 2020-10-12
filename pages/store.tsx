@@ -1,12 +1,13 @@
 import { 
-    Typography, Button
+    Typography
 } from '@material-ui/core'
 
 import LayoutComponent from '../components/layout_component'
 import TableProducts from '../components/table_products';
 import DialogProduct from '../components/dialog_product'
 import IProduct from '../models/product'
-import useSWR, { mutate, trigger } from 'swr';
+import Head from 'next/head';
+import useSWR from 'swr';
 import { API_TODOS } from "../routes/api";
 
 export default function Store(props) {
@@ -17,6 +18,7 @@ export default function Store(props) {
 
     return (
         <LayoutComponent>
+            <Head><title>Productos</title></Head>
             <Typography variant="h5">Lista de productos</Typography>
             <DialogProduct products={products} />
             <TableProducts products={products} isLoading={isLoading}/>

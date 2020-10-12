@@ -40,13 +40,13 @@ export default function DialogProduct({products}:{products:IProduct[]}) {
     const [alert, setAlert] = useState(false);
     const [alertOption, setAlertOption] = useState('success');
     const [alertMessage, setAlertMessage] = useState('');
+    const closeAlert = () => {
+        setAlert(false);
+    };
 
     const onSubmit = async (form) => {
         
-        const res = await fetch(
-            process.env.NEXT_PUBLIC_API_URL
-            +'/crearUnProducto', 
-        {
+        const res = await fetch(API_CREAR, {
             method: 'post',
             body: JSON.stringify(form),
             headers: {'Content-Type': 'application/json'}
@@ -68,7 +68,8 @@ export default function DialogProduct({products}:{products:IProduct[]}) {
 
     return (
         <div>
-            <AlertComponent alert={alert} alertOption={alertOption} alertMessage={alertMessage}></AlertComponent>
+            <AlertComponent alert={alert} alertOption={alertOption} 
+                alertMessage={alertMessage} closeAlert={closeAlert}></AlertComponent>
             <Button onClick={handleOpenDialog} color="primary" variant="outlined">Agregar un producto</Button>
             <Dialog open={openDialog} onClose={handleCloseDialog} aria-labelledby="form-dialog-title">
                 <form onSubmit={handleSubmit(onSubmit)}>
